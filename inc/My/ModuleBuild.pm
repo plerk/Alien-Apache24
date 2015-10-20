@@ -18,7 +18,19 @@ sub new
   };
   $args{alien_version_check} = 'false';
   $args{alien_stage_install} = 0;
-  $args{alien_install_commands} = [ 'rm -rf %s', 'make install' ];
+
+  $args{alien_bin_requires} = {
+    'Alien::patch' => '0.06',
+  };
+  $args{alien_build_commands}   = [
+    '%{patch} -p1 < ../../patches/httpd-2.4.17.atdir.diff',
+    '%c --prefix=%s',
+    'make',
+  ];
+  $args{alien_install_commands} = [
+    'rm -rf %s',
+    'make install',
+  ];
   
   my $self = $class->SUPER::new(%args);
   

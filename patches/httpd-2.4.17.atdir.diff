@@ -1,0 +1,29 @@
+diff --git a/support/apxs.in b/support/apxs.in
+index ad1287f..6c40695 100644
+--- a/support/apxs.in
++++ b/support/apxs.in
+@@ -25,7 +25,7 @@ package apxs;
+ 
+ my %config_vars = ();
+ 
+-my $installbuilddir = "@exp_installbuilddir@";
++my $installbuilddir = '@exp_installbuilddir@';
+ get_config_vars("$installbuilddir/config_vars.mk",\%config_vars);
+ 
+ # read the configuration variables once
+@@ -219,6 +219,7 @@ sub get_vars {
+                 ? $config_vars{$arg}
+                 : $config_vars{lc $arg};
+             $val =~ s/[()]//g;
++            $val =~ s{\@}{\\@}g;
+             $result .= eval "qq($val)" if defined $val;
+             $result .= ";;";
+             $ok = 1;
+@@ -226,6 +227,7 @@ sub get_vars {
+         if (not $ok) {
+             if (exists $internal_vars{$arg} or exists $internal_vars{lc $arg}) {
+                 my $val = exists $internal_vars{$arg} ? $arg : lc $arg;
++                $val =~ s{\@}{\\@}g;
+                 $val = eval "\$CFG_$val";
+                 $result .= eval "qq($val)" if defined $val;
+                 $result .= ";;";
