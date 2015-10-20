@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use 5.010;
+use Alien::Apache24;
+use Env qw( @PATH );
+
+# PODNAME: alien-apache24
+# ABSTRACT: Run command with Apache build specifically for this Perl
+# VERSION
+
+
+if(@ARGV > 0)
+{
+  unshift @PATH, Alien::Apache24->bin_dir;
+  say "+PATH=$PATH[0]:\$PATH";
+  say "+@ARGV";
+  system @ARGV;
+}
+else
+{
+  say STDERR "usage: $0 command";
+}
+
+
