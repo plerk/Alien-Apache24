@@ -2,6 +2,9 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+0.03      2015-10-21 14:18:59 -0400
+  - Add installer for mod_perl
+
 0.02      2015-10-20 16:12:10 -0400
   - Add patch to make usable in a @ dir
 
