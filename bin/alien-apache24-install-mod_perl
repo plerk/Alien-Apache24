@@ -14,7 +14,7 @@ use JSON::PP qw( decode_json );
 use File::Temp qw( tempdir );
 use URI;
 
-# PODNAME: alien-apache24
+# PODNAME: alien-apache24-install-mod_perl
 # ABSTRACT: Install mod_perl
 # VERSION
 
