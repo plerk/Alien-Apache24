@@ -1,0 +1,86 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use autodie qw( :all );
+use 5.010001;
+use Alien::Apache24;
+use Env qw( @PATH );
+use File::Which qw( which );
+use Config;
+use File::chdir;
+use HTTP::Tiny;
+use JSON::PP qw( decode_json );
+use File::Temp qw( tempdir );
+use URI;
+
+# PODNAME: alien-apache24
+# ABSTRACT: Install mod_perl
+# VERSION
+
+unshift @PATH, Alien::Apache24->bin_dir;
+say "+PATH=$PATH[0]:\$PATH";
+
+say "+which apxs";
+my $apxs = which 'apxs';
+
+if($apxs)
+{
+  say $apxs;
+}
+else
+{
+  die "unable to find apxs";
+}
+
+sub run
+{
+  my @command = @_;
+  say "+@command";
+  system @command;
+}
+
+my $url = 'https://api.metacpan.org/release/mod_perl';
+say "+# download $url";
+my $response = HTTP::Tiny->new->get($url);
+die join(' ', $response->{status}, $response->{reason}, $url) unless $response->{success};
+$response = decode_json($response->{content});
+
+$url = URI->new($response->{download_url});
+say "+# download $url";
+$response = HTTP::Tiny->new->get($url);
+die join(' ', $response->{status}, $response->{reason}, $url) unless $response->{success};
+$response = $response->{content};
+
+my $dir = tempdir( CLEANUP => 1);
+say "+cd $dir";
+$CWD = $dir;
+
+my $fn = $url->path;
+$fn =~ s/^.*\///g;
+
+say "+# write $fn";
+open my $fh, '>', $fn;
+binmode $fh;
+print $fh $response;
+close $fh;
+
+run 'tar', 'zxvf', $fn;
+
+do {
+  opendir my $dh, '.';
+  my($dir) = grep { -d $_ } grep !/^\./, readdir $dh;
+  closedir $dh;
+  
+  say "+cd $dir";
+  $CWD = $dir;
+};
+
+my @Makefile_PL_args = ("MP_APXS=$apxs");
+
+push @Makefile_PL_args, 'MP_CCOPTS=-std=gnu89' if $Config{cc} eq 'clang';
+
+run $^X, 'Makefile.PL', @Makefile_PL_args;
+run 'make';
+run 'make', 'test';
+run 'make', 'install';

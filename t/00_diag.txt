@@ -1,5 +1,10 @@
 Alien::Base
 Env
+File::Which
 File::chdir
+HTTP::Tiny
+IPC::System::Simple
+JSON::PP
 Module::Build
 Test::More
+URI
