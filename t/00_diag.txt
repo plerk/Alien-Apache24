@@ -3,8 +3,10 @@ Env
 File::Which
 File::chdir
 HTTP::Tiny
+IO::Socket::SSL
 IPC::System::Simple
 JSON::PP
 Module::Build
+Net::SSLeay
 Test::More
 URI
