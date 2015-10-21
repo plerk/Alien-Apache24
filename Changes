@@ -1,6 +1,9 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - allow for install even when tests fail for mod_perl
+  - require SSL libs which are necessary for
+    mod_perl installer
 
 0.03      2015-10-21 14:18:59 -0400
   - Add installer for mod_perl

@@ -52,35 +52,46 @@ $response = HTTP::Tiny->new->get($url);
 die join(' ', $response->{status}, $response->{reason}, $url) unless $response->{success};
 $response = $response->{content};
 
-my $dir = tempdir( CLEANUP => 1);
-say "+cd $dir";
-$CWD = $dir;
-
-my $fn = $url->path;
-$fn =~ s/^.*\///g;
-
-say "+# write $fn";
-open my $fh, '>', $fn;
-binmode $fh;
-print $fh $response;
-close $fh;
-
-run 'tar', 'zxvf', $fn;
-
 do {
-  opendir my $dh, '.';
-  my($dir) = grep { -d $_ } grep !/^\./, readdir $dh;
-  closedir $dh;
-  
+  my $dir = tempdir( CLEANUP => 1);
   say "+cd $dir";
-  $CWD = $dir;
+  local $CWD = $dir;
+
+  my $fn = $url->path;
+  $fn =~ s/^.*\///g;
+
+  say "+# write $fn";
+  open my $fh, '>', $fn;
+  binmode $fh;
+  print $fh $response;
+  close $fh;
+
+  run 'tar', 'zxvf', $fn;
+
+  do {
+    opendir my $dh, '.';
+    my($dir) = grep { -d $_ } grep !/^\./, readdir $dh;
+    closedir $dh;
+  
+    say "+cd $dir";
+    $CWD = $dir;
+  };
+
+  my @Makefile_PL_args = ("MP_APXS=$apxs");
+
+  push @Makefile_PL_args, 'MP_CCOPTS=-std=gnu89' if $Config{cc} eq 'clang';
+
+  run $^X, 'Makefile.PL', @Makefile_PL_args;
+  run 'make';
+  eval { run 'make', 'test' };
+
+  if($@)
+  {
+    warn "make test failed";
+    print "install anyway? ";
+    my $yn = <STDIN>;
+    exit 2 unless $yn =~ /^y/i;
+  }
+
+  run 'make', 'install';
 };
-
-my @Makefile_PL_args = ("MP_APXS=$apxs");
-
-push @Makefile_PL_args, 'MP_CCOPTS=-std=gnu89' if $Config{cc} eq 'clang';
-
-run $^X, 'Makefile.PL', @Makefile_PL_args;
-run 'make';
-run 'make', 'test';
-run 'make', 'install';
