@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+  - Added some actual documentation!
 
 0.04      2015-10-21 14:51:18 -0400
   - allow for install even when tests fail for mod_perl

@@ -10,6 +10,15 @@ use Env qw( @PATH );
 # ABSTRACT: Run command with Apache build specifically for this Perl
 # VERSION
 
+=head1 SYNOPSIS
+
+ % alien-apache24 httpd -v
+
+=head1 DESCRIPTION
+
+Run a command with Apache in the path.
+
+=cut
 
 if(@ARGV > 0)
 {

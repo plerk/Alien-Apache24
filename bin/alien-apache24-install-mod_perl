@@ -18,6 +18,30 @@ use URI;
 # ABSTRACT: Install mod_perl
 # VERSION
 
+=head1 SYNOPSIS
+
+ % alien-apache24-install-mod_perl
+
+=head1 DESCRIPTION
+
+Download mod_perl from CPAN and attempt to install it.
+
+Notes:
+
+=over 4
+
+=item may patch mod_perl before attempting to install
+
+=item will run the mod_perl test suite prior to installing
+
+=item will install without prompting if the test suite passes
+
+=item will prompt the user to install anyway if the test suite fails
+
+=back
+
+=cut
+
 unshift @PATH, Alien::Apache24->bin_dir;
 say "+PATH=$PATH[0]:\$PATH";
 
