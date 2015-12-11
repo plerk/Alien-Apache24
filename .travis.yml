@@ -16,5 +16,5 @@ perl:
   - "5.22"
 
 script:
-  - dzil install -v
+  - dzil install -v --install-command 'cpanm -v .'
   - alien-apache24-install-mod_perl
