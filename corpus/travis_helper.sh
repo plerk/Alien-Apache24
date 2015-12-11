@@ -13,5 +13,11 @@ cd apr-1.5.2
 cd /tmp/build/apr-util
 curl http://www.motorlogy.com/apache/apr/apr-util-1.5.4.tar.gz | tar zxvf -
 cd apr-util-1.5.4
-./configure --prefix=/usr && make && sudo make install
+./configure --prefix=/usr 
+
+cat config.log
+
+false
+
+#&& make && sudo make install
 
