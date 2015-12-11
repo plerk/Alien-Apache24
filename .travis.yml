@@ -1,14 +1,9 @@
 language: perl
 sudo: false
 
-addons:
-  apt:
-    packages:
-      - libapr1-dev
-      - libaprutil1-dev
-
 install:
   - perlbrew list
+  - bash corpus/travis_helper.sh
   - dzil authordeps --missing | cpanm -n
   - dzil listdeps --missing | cpanm -n
 
