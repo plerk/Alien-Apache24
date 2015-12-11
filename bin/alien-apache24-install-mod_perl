@@ -3,7 +3,6 @@
 use strict;
 use warnings;
 use autodie qw( :all );
-use 5.010001;
 use Alien::Apache24;
 use Env qw( @PATH );
 use File::Which qw( which );
@@ -43,14 +42,14 @@ Notes:
 =cut
 
 unshift @PATH, Alien::Apache24->bin_dir;
-say "+PATH=$PATH[0]:\$PATH";
+print "+PATH=$PATH[0]:\$PATH\n";
 
-say "+which apxs";
+print "+which apxs\n";
 my $apxs = which 'apxs';
 
 if($apxs)
 {
-  say $apxs;
+  print $apxs, "\n";
 }
 else
 {
@@ -60,31 +59,31 @@ else
 sub run
 {
   my @command = @_;
-  say "+@command";
+  print "+@command\n";
   system @command;
 }
 
 my $url = 'https://api.metacpan.org/release/mod_perl';
-say "+# download $url";
+print "+# download $url\n";
 my $response = HTTP::Tiny->new->get($url);
 die join(' ', $response->{status}, $response->{reason}, $url) unless $response->{success};
 $response = decode_json($response->{content});
 
 $url = URI->new($response->{download_url});
-say "+# download $url";
+print "+# download $url\n";
 $response = HTTP::Tiny->new->get($url);
 die join(' ', $response->{status}, $response->{reason}, $url) unless $response->{success};
 $response = $response->{content};
 
 do {
   my $dir = tempdir( CLEANUP => 1);
-  say "+cd $dir";
+  print "+cd $dir\n";
   local $CWD = $dir;
 
   my $fn = $url->path;
   $fn =~ s/^.*\///g;
 
-  say "+# write $fn";
+  print "+# write $fn\n";
   open my $fh, '>', $fn;
   binmode $fh;
   print $fh $response;
@@ -97,7 +96,7 @@ do {
     my($dir) = grep { -d $_ } grep !/^\./, readdir $dh;
     closedir $dh;
   
-    say "+cd $dir";
+    print "+cd $dir\n";
     $CWD = $dir;
   };
 

@@ -2,7 +2,6 @@
 
 use strict;
 use warnings;
-use 5.010;
 use Alien::Apache24;
 use Env qw( @PATH );
 
@@ -23,13 +22,13 @@ Run a command with Apache in the path.
 if(@ARGV > 0)
 {
   unshift @PATH, Alien::Apache24->bin_dir;
-  say "+PATH=$PATH[0]:\$PATH";
-  say "+@ARGV";
+  print "+PATH=$PATH[0]:\$PATH\n";
+  print "+@ARGV\n";
   system @ARGV;
 }
 else
 {
-  say STDERR "usage: $0 command";
+  print STDERR "usage: $0 command\n";
 }
 
 
