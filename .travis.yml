@@ -1,14 +1,11 @@
 language: perl
-sudo: false
+sudo: true
 
 install:
   - perlbrew list
   - bash corpus/travis_helper.sh
   - dzil authordeps --missing | cpanm -n
   - dzil listdeps --missing | cpanm -n
-
-env:
-  - LD_LOCAL_LIB=$HOME/tools/lib PATH=$HOME/tools/bin:$PATH PKG_CONFIG_PATH=$HOME/tools/lib/pkgconfig
 
 perl:
   - "5.18-shrplib"
