@@ -13,13 +13,8 @@ install:
   - dzil listdeps --missing | cpanm -n
 
 perl:
-  - "5.8"
-  - "5.10"
-  - "5.14"
-  - "5.16"
-  - "5.18"
-  - "5.20"
-  - "5.22"
+  - "5.18-shrplib"
+  - "5.20-shrplib"
 
 script:
   - dzil install -v --install-command 'cpanm -v .'
