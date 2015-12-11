@@ -1,5 +1,6 @@
 language: perl
 sudo: true
+cache: ccache
 
 install:
   - perlbrew list
