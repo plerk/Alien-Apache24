@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -euo pipefail
-IFS=$'\n\t'
+#set -euo pipefail
+#IFS=$'\n\t'
 
 mkdir -p /tmp/build/apr /tmp/build/apr-util
 
