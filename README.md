@@ -1,4 +1,4 @@
-# Alien::Apache24
+# Alien::Apache24 [![Build Status](https://secure.travis-ci.org/plicease/Alien-Apache24.png)](http://travis-ci.org/plicease/Alien-Apache24)
 
 Build and install Apache httpd 2.4.x
 
