@@ -3,7 +3,7 @@ sudo: true
 
 install:
   - perlbrew list
-  - bash corpus/travis_helper.sh
+  - bash travis/travis_helper.sh
   - dzil authordeps --missing | cpanm -n
   - dzil listdeps --missing | cpanm -n
 
